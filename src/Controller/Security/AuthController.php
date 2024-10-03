@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Security;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class LoginController extends AbstractController
+class AuthController extends AbstractController
 {
     #[Route(path: '/login', name: 'login')]
     public function login(): Response
@@ -38,5 +39,13 @@ class LoginController extends AbstractController
     public function reset(): Response
     {
         return $this->render('auth/reset.html.twig');
+    }
+
+    #[Route(path: '/logout', name: 'logout')]
+    public function logout(): Response
+    {
+        $url = $this->generateUrl('homepage');
+
+        return new RedirectResponse($url);
     }
 }

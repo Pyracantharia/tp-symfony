@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ListController extends AbstractController
 {
-    #[Route(path: '/lists', name: 'lists')]
+    #[Route(path: '/lists', name: 'my_lists')]
     public function show(): Response
     {
         return $this->render('other/lists.html.twig');

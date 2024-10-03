@@ -16,7 +16,7 @@ class CategoryController extends AbstractController
         return $this->render('movie/discover.html.twig');
     }
 
-    #[Route('/category')]
+    #[Route('/category', name: 'show_category')]
     public function show(): Response
     {
         return $this->render('movie/category.html.twig');
