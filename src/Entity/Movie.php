@@ -13,7 +13,7 @@ class Movie
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\OneToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Media $media = null;
 
