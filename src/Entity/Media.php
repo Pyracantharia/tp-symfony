@@ -33,7 +33,7 @@ class Media
     private array $mediaType = [];
 
     #[ORM\Column(length: 255)]
-    private ?string $titre = null;
+    private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -127,14 +127,14 @@ class Media
         return $this;
     }
 
-    public function getTitre(): ?string
+    public function getTitle(): ?string
     {
-        return $this->titre;
+        return $this->title;
     }
 
-    public function setTitre(string $titre): static
+    public function setTitle(string $title): static
     {
-        $this->titre = $titre;
+        $this->title = $title;
 
         return $this;
     }
