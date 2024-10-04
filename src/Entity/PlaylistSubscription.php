@@ -16,6 +16,13 @@ class PlaylistSubscription
     #[ORM\Column]
     private ?\DateTimeImmutable $subscribedAt = null;
 
+    #[ORM\ManyToOne]
+    private ?User $user = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Playlist $playlist = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +36,30 @@ class PlaylistSubscription
     public function setSubscribedAt(\DateTimeImmutable $subscribedAt): static
     {
         $this->subscribedAt = $subscribedAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPlaylist(): ?Playlist
+    {
+        return $this->playlist;
+    }
+
+    public function setPlaylist(Playlist $playlist): static
+    {
+        $this->playlist = $playlist;
 
         return $this;
     }

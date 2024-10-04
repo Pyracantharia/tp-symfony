@@ -22,6 +22,9 @@ class Episode
     #[ORM\Column]
     private ?\DateTimeImmutable $releasedAt = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Season $season = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Episode
     public function setReleasedAt(\DateTimeImmutable $releasedAt): static
     {
         $this->releasedAt = $releasedAt;
+
+        return $this;
+    }
+
+    public function getSeason(): ?Season
+    {
+        return $this->season;
+    }
+
+    public function setSeason(?Season $season): static
+    {
+        $this->season = $season;
 
         return $this;
     }

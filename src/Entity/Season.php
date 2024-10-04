@@ -16,6 +16,9 @@ class Season
     #[ORM\Column(length: 255)]
     private ?string $number = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Serie $serie = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +32,18 @@ class Season
     public function setNumber(string $number): static
     {
         $this->number = $number;
+
+        return $this;
+    }
+
+    public function getSerie(): ?Serie
+    {
+        return $this->serie;
+    }
+
+    public function setSerie(?Serie $serie): static
+    {
+        $this->serie = $serie;
 
         return $this;
     }
