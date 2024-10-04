@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Enum\UserAccountStatusEnum;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -93,5 +95,27 @@ class User
         $this->currentSubscription = $currentSubscription;
 
         return $this;
+    }
+
+    // Implement the getUserIdentifier() method, required by UserInterface
+    public function getUserIdentifier(): string
+    {
+        // Return the username (or email if you prefer)
+        return $this->username;
+    }
+
+    public function getRoles(): array
+    {
+        return ['ROLE_USER']; // Adjust as needed
+    }
+
+    public function getSalt(): ?string
+    {
+        return null; // bcrypt and sodium don’t require a separate salt
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Clear temporary sensitive data, if any
     }
 }

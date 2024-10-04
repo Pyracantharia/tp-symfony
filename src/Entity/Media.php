@@ -8,9 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\InheritanceType;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
 
+#[InheritanceType('JOINED')]
+#[DiscriminatorColumn(name: 'mediaType', type: 'string')]
+#[DiscriminatorMap(['movie' => Movie::class, 'serie' => Serie::class])]
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
-class Media
+class Media 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
