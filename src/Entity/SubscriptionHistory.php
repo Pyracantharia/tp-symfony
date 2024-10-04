@@ -19,6 +19,13 @@ class SubscriptionHistory
     #[ORM\Column]
     private ?\DateTimeImmutable $endAt = null;
 
+    #[ORM\ManyToOne]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Subscription $subscription = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +51,30 @@ class SubscriptionHistory
     public function setEndAt(\DateTimeImmutable $endAt): static
     {
         $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(?Subscription $subscription): static
+    {
+        $this->subscription = $subscription;
 
         return $this;
     }

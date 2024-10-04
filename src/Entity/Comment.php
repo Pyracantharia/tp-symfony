@@ -21,6 +21,18 @@ class Comment
     #[ORM\Column(enumType: CommentStatusEnum::class)]
     private ?CommentStatusEnum $status = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Media $media = null;
+
+    #[ORM\ManyToOne(targetEntity: self::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?self $parentComment = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +58,42 @@ class Comment
     public function setStatus(CommentStatusEnum $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getMedia(): ?Media
+    {
+        return $this->media;
+    }
+
+    public function setMedia(?Media $media): static
+    {
+        $this->media = $media;
+
+        return $this;
+    }
+
+    public function getParentComment(): ?self
+    {
+        return $this->parentComment;
+    }
+
+    public function setParentComment(?self $parentComment): static
+    {
+        $this->parentComment = $parentComment;
 
         return $this;
     }
