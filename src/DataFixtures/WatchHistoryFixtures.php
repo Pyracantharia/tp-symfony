@@ -18,7 +18,7 @@ class WatchHistoryFixtures extends Fixture implements DependentFixtureInterface
             $watchHistory->setNumberOfViews(mt_rand(1, 10));
 
             // Link user and media
-            $watchHistory->setUser($this->getReference('user-' . $i));
+            $watchHistory->setWatcher($this->getReference('user-' . ($i % 3)));
             $watchHistory->setMedia($this->getReference('media-' . ($i % 5)));
 
             $manager->persist($watchHistory);

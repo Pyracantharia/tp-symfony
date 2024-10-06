@@ -20,7 +20,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         
             // Récupérer un utilisateur fictif
             $user = $this->getReference('user-' . ($i % 10 === 0 ? 10 : $i % 10));
-            $comment->setUser($user);
+            $comment->setPublisher($user);
         
             // Récupérer un media fictif
             $media = $this->getReference('media-' . ($i % 5));

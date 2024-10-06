@@ -17,7 +17,7 @@ class PlaylistSubscriptionFixtures extends Fixture implements DependentFixtureIn
             $subscription->setSubscribedAt(new DateTimeImmutable());
 
             // Link user and playlist
-            $subscription->setUser($this->getReference('user-' . ($i % 10)));
+            $subscription->setSubscriber($this->getReference('user-' . $i));
             $subscription->setPlaylist($this->getReference('playlist-' . $i));
 
             $manager->persist($subscription);

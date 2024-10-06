@@ -309,23 +309,4 @@ class Media
 
         return $this;
     }
-
-    public function setDiscr(string $discr): static
-{
-    $reflection = new \ReflectionClass($this);
-    $discriminatorMap = [
-        'movie' => Movie::class,
-        'serie' => Serie::class,
-    ];
-
-    if (array_key_exists($discr, $discriminatorMap)) {
-        if ($reflection->getName() === $discriminatorMap[$discr]) {
-            // Doctrine va gérer automatiquement ce champ.
-            return $this;
-        }
-    }
-
-    throw new \InvalidArgumentException('Invalid discriminator value.');
-}
-
 }

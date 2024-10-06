@@ -17,7 +17,7 @@ class SubscriptionHistoryFixtures extends Fixture implements DependentFixtureInt
             $history->setEndAt(new DateTimeImmutable('2023-12-' . str_pad((string)$i, 2, '0', STR_PAD_LEFT)));
 
             // Link to a user and a subscription
-            $history->setUser($this->getReference('user-' . $i));
+            $history->setSubscriber($this->getReference('user-' . ($i % 3)));
             $history->setSubscription($this->getReference('subscription-' . ($i % 3)));
 
             $manager->persist($history);

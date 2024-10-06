@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\CommentStatusEnum;
 use App\Repository\CommentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,17 +23,27 @@ class Comment
     #[ORM\Column(enumType: CommentStatusEnum::class)]
     private ?CommentStatusEnum $status = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'childComments')]
+    private ?self $parentComment = null;
 
-    #[ORM\ManyToOne]
+    /**
+     * @var Collection<int, self>
+     */
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parentComment')]
+    private Collection $childComments;
+
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $publisher = null;
+
+    #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Media $media = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?self $parentComment = null;
+    public function __construct()
+    {
+        $this->childComments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -62,14 +74,56 @@ class Comment
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getParentComment(): ?self
     {
-        return $this->user;
+        return $this->parentComment;
     }
 
-    public function setUser(?User $user): static
+    public function setParentComment(?self $parentComment): static
     {
-        $this->user = $user;
+        $this->parentComment = $parentComment;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getChildComments(): Collection
+    {
+        return $this->childComments;
+    }
+
+    public function addChildComment(self $childComment): static
+    {
+        if (!$this->childComments->contains($childComment)) {
+            $this->childComments->add($childComment);
+            $childComment->setParentComment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChildComment(self $childComment): static
+    {
+        if ($this->childComments->removeElement($childComment)) {
+            // set the owning side to null (unless already changed)
+            if ($childComment->getParentComment() === $this) {
+                $childComment->setParentComment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPublisher(): ?User
+    {
+        return $this->publisher;
+    }
+
+    public function setPublisher(?User $publisher): static
+    {
+        $this->publisher = $publisher;
 
         return $this;
     }
@@ -82,18 +136,6 @@ class Comment
     public function setMedia(?Media $media): static
     {
         $this->media = $media;
-
-        return $this;
-    }
-
-    public function getParentComment(): ?self
-    {
-        return $this->parentComment;
-    }
-
-    public function setParentComment(?self $parentComment): static
-    {
-        $this->parentComment = $parentComment;
 
         return $this;
     }

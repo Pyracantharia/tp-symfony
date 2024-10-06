@@ -25,11 +25,11 @@ class Category
      * @var Collection<int, Media>
      */
     #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'categories')]
-    private Collection $media;
+    private Collection $medias;
 
     public function __construct()
     {
-        $this->media = new ArrayCollection();
+        $this->medias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,25 +64,25 @@ class Category
     /**
      * @return Collection<int, Media>
      */
-    public function getMedia(): Collection
+    public function getMedias(): Collection
     {
-        return $this->media;
+        return $this->medias;
     }
 
-    public function addMedium(Media $medium): static
+    public function addMedia(Media $media): static
     {
-        if (!$this->media->contains($medium)) {
-            $this->media->add($medium);
-            $medium->addCategory($this);
+        if (!$this->medias->contains($media)) {
+            $this->medias->add($media);
+            $media->addCategory($this);
         }
 
         return $this;
     }
 
-    public function removeMedium(Media $medium): static
+    public function removeMedia(Media $media): static
     {
-        if ($this->media->removeElement($medium)) {
-            $medium->removeCategory($this);
+        if ($this->medias->removeElement($media)) {
+            $media->removeCategory($this);
         }
 
         return $this;

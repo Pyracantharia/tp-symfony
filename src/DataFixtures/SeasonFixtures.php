@@ -12,7 +12,7 @@ class SeasonFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        for ($i = 1; $i <= 3; $i++) {
+        for ($i = 0; $i <= 3; $i++) {
             $season = new Season();
             $season->setNumber((string)$i);
 

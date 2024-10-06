@@ -18,8 +18,8 @@ class PlaylistFixtures extends Fixture implements DependentFixtureInterface
             $playlist->setCreatedAt(new DateTimeImmutable());
             $playlist->setUpdatedAt(new DateTimeImmutable());
 
-            // Associate a user
-            $playlist->setUser($this->getReference('user-' . ($i % 10)));
+            $playlist->setCreator($this->getReference('user-' . $i));  // Utilise 'user-0', 'user-1', etc.
+         
 
             $manager->persist($playlist);
 

@@ -19,10 +19,11 @@ class SubscriptionHistory
     #[ORM\Column]
     private ?\DateTimeImmutable $endAt = null;
 
-    #[ORM\ManyToOne]
-    private ?User $user = null;
+    #[ORM\ManyToOne(inversedBy: 'subscriptionHistories')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $subscriber = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'subscriptionHistories')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Subscription $subscription = null;
 
@@ -55,14 +56,14 @@ class SubscriptionHistory
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getSubscriber(): ?User
     {
-        return $this->user;
+        return $this->subscriber;
     }
 
-    public function setUser(?User $user): static
+    public function setSubscriber(?User $subscriber): static
     {
-        $this->user = $user;
+        $this->subscriber = $subscriber;
 
         return $this;
     }
