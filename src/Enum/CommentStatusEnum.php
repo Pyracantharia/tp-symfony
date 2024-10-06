@@ -9,4 +9,6 @@ enum CommentStatusEnum: string
     case PENDING = 'pending';
     case VALIDATED = 'validated';
     case REJECTED = 'rejected';
+    case APPROVED = 'approved';
+
 }
