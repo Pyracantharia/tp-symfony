@@ -21,6 +21,8 @@ class SeasonFixtures extends Fixture implements DependentFixtureInterface
 
             $manager->persist($season);
 
+            
+
             // Register this season as a reference
             $this->addReference('season-' . $i, $season);
         }

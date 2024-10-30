@@ -24,7 +24,9 @@ class Comment
     private ?CommentStatusEnum $status = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'childComments')]
+    #[ORM\JoinColumn(name: "parent_comment_id", referencedColumnName: "id", onDelete: "CASCADE")]
     private ?self $parentComment = null;
+    
 
     /**
      * @var Collection<int, self>
