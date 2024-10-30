@@ -18,14 +18,28 @@ class MovieController extends AbstractController
         // Récupère le film par son id
         $movie = $movieRepository->find($id);
 
+        $categories = $movie->getCategories();
+
         // Gère le cas où le film n'existe pas
         if (!$movie) {
             throw $this->createNotFoundException('Le film n\'existe pas');
         }
 
+
+        $categoriesName = "";
+        foreach ($categories as $category) {
+            $categoriesName = $category->getName();
+        }
+
+
+        // dd($categoriesName);
+        
+        // dd($categories);
+
         // Passe les informations du film au template
         return $this->render('movie/detail.html.twig', [
             'movie' => $movie,
+            'categoriesName' => $categoriesName
         ]);
     }
    
