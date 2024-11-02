@@ -6,6 +6,7 @@ use App\Repository\PlaylistRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Media;
 
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
 class Playlist
@@ -157,5 +158,20 @@ class Playlist
         }
 
         return $this;
+    }
+
+
+    public function getMovieCount(): int
+    {
+        return $this->playlistMedia->filter(function (PlaylistMedia $playlistMedia) {
+            return $playlistMedia->getMedia() instanceof Movie;
+        })->count();
+    }
+
+    public function getSeriesCount(): int
+    {
+        return $this->playlistMedia->filter(function (PlaylistMedia $playlistMedia) {
+            return $playlistMedia->getMedia() instanceof Serie;
+        })->count();
     }
 }
