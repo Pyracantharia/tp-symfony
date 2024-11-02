@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Security;
 
+use App\Entity\User;
+use App\Form\RegistrationFormType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AuthController extends AbstractController
 {
@@ -18,9 +22,31 @@ class AuthController extends AbstractController
     }
 
     #[Route(path: '/register', name: 'register')]
-    public function register(): Response
-    {
-        return $this->render('auth/register.html.twig');
+    public function register(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response {
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Hasher le mot de passe
+            $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($hashedPassword);
+
+            // Enregistrer l'utilisateur dans la base de données
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // Rediriger vers la page de connexion ou un autre endroit
+            return $this->redirectToRoute('login');
+        }
+
+        return $this->render('auth/register.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
     }
 
     #[Route(path: '/forgot', name: 'forgot')]
