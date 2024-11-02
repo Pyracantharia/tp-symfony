@@ -27,16 +27,37 @@ class ListController extends AbstractController
         );
     }
 
+    #[Route('/playlist/{id}/media/render', name: 'playlist_media_render')]
+    public function renderMediaByPlaylist(int $id, PlaylistRepository $playlistRepository): JsonResponse
+    {
+        $playlist = $playlistRepository->find($id);
+
+        if (!$playlist) {
+            return new JsonResponse(['error' => 'Playlist not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $html = '';
+        foreach ($playlist->getPlaylistMedia() as $playlistMedia) {
+            $media = $playlistMedia->getMedia();
+            $html .= $this->renderView('parts/movie_card_big.html.twig', [
+                'media' => $media,
+            ]);
+        }
+
+        return new JsonResponse(['html' => $html]);
+    }
+
+
 
     #[Route('/playlist/{id}/media', name: 'playlist_media')]
     public function getMediaByPlaylist(int $id, PlaylistRepository $playlistRepository): JsonResponse
     {
         $playlist = $playlistRepository->find($id);
-    
+
         if (!$playlist) {
             return new JsonResponse(['error' => 'Playlist not found'], Response::HTTP_NOT_FOUND);
         }
-    
+
         $mediaData = [];
         foreach ($playlist->getPlaylistMedia() as $playlistMedia) {
             $media = $playlistMedia->getMedia();
@@ -47,9 +68,9 @@ class ListController extends AbstractController
                 // Ajouter d'autres champs si nécessaire
             ];
         }
-    
+
         return new JsonResponse(['media' => $mediaData]);
     }
-    
+
 
 }

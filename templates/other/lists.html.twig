@@ -118,13 +118,8 @@
 
 			<section class="mt-9">
 				<div class="media-container grid grid-cols-2 gap-y-5 sm:grid-cols-3 gap-x-5">
-					{% for playlist in playlists %}
-					{% for playlistMedia in playlist.playlistMedia %}
-					{% include 'parts/movie_card_big.html.twig' with { 'media': playlistMedia.media } %}
-					{% endfor %}
-					{% else %}
-					<p>Aucun média disponible</p>
-					{% endfor %}
+				    <p>Sélectionnez une playlist pour afficher les médias.</p>
+
 				</div>
 
 				<button class="flex flex-col items-center mt-9 w-full">
@@ -154,25 +149,16 @@
 	document.addEventListener('DOMContentLoaded', function () {
 		const playlistSelect = document.getElementById('playlist-select');
 		playlistSelect.addEventListener('change', function () {
-			const playlistId = this.value; // Utilise l'ID de la playlist sélectionnée
-			fetch(`/playlist/${playlistId}/media`) // Envoie une requête avec l'ID uniquement
+			const playlistId = this.value;
+			fetch(`/playlist/${playlistId}/media/render`)
 				.then(response => response.json())
 				.then(data => {
 					const mediaContainer = document.querySelector('.media-container');
-					mediaContainer.innerHTML = ''; // Efface le contenu précédent
-
-					data.media.forEach(media => {
-						const mediaElement = document.createElement('div');
-						mediaElement.classList.add('media-card');
-						mediaElement.innerHTML = `
-							<h3>${media.title}</h3>
-							<img src="${media.coverImage}" alt="${media.title}">
-							<!-- Add more media details here -->
-						`;
-						mediaContainer.appendChild(mediaElement);
-					});
+					mediaContainer.innerHTML = data.html; // Insère directement le HTML rendu
 				});
 		});
 	});
+	
+	
 
 </script>
