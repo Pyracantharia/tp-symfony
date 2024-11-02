@@ -17,7 +17,11 @@ class ListController extends AbstractController
     #[Route(path: '/lists', name: 'my_lists')]
     public function show(PlaylistRepository $playlistRepository): Response
     {
-        $playlists = $playlistRepository->findAll();
+        $user = $this->getUser();
+
+        dd($user);
+
+        $playlists = $playlistRepository->findByUser($user);
 
         return $this->render(
             'other/lists.html.twig',
