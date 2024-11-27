@@ -18,10 +18,6 @@ class AuthController extends AbstractController
     #[Route(path: '/login', name: 'login')]
     public function login(): Response
     {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('homepage'); // Redirige vers la page d'accueil
-        }
-    
         return $this->render('auth/login.html.twig');
     }
 
@@ -31,30 +27,23 @@ class AuthController extends AbstractController
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher
     ): Response {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('homepage'); // Redirige vers la page d'accueil si l'utilisateur est déjà connecté
-        }
-    
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
-            // Assigner un rôle par défaut à l'utilisateur
-            $user->setRoles(['ROLE_USER']);
-    
             // Hasher le mot de passe
             $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
-    
+
             // Enregistrer l'utilisateur dans la base de données
             $entityManager->persist($user);
             $entityManager->flush();
-    
+
             // Rediriger vers la page de connexion ou un autre endroit
             return $this->redirectToRoute('login');
         }
-    
+
         return $this->render('auth/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
@@ -79,9 +68,10 @@ class AuthController extends AbstractController
     }
 
     #[Route(path: '/logout', name: 'logout')]
-    public function logout(): void
+    public function logout(): Response
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        $url = $this->generateUrl('homepage');
+
+        return new RedirectResponse($url);
     }
-    
 }

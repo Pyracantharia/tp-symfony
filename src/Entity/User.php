@@ -26,9 +26,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column(type: 'json')]
-    private array $roles = [];
-
     #[ORM\Column(enumType: UserAccountStatusEnum::class)]
     private ?UserAccountStatusEnum $accountStatus = null;
 
@@ -119,6 +116,11 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return $this->username;
     }
 
+    public function getRoles(): array
+    {
+        return ['ROLE_USER']; // Adjust as needed
+    }
+
     public function getSalt(): ?string
     {
         return null; // bcrypt and sodium don’t require a separate salt
@@ -176,21 +178,4 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
         return $this;
     }
-
-    public function getRoles(): array
-    {
-        // ROLE_USER est toujours inclus par défaut
-        $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
 }
