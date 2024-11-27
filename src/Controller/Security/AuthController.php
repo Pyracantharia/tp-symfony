@@ -12,22 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use App\Enum\UserAccountStatusEnum;
-use App\Form\LoginFormType;
-
-
 
 class AuthController extends AbstractController
 {
     #[Route(path: '/login', name: 'login')]
-    public function login(Request $request): Response
+    public function login(): Response
     {
-        $form = $this->createForm(LoginFormType::class);
-        $form->handleRequest($request);
-
-        return $this->render('auth/login.html.twig', [
-            'loginForm' => $form->createView(),
-        ]);
+        return $this->render('auth/login.html.twig');
     }
 
     #[Route(path: '/register', name: 'register')]
@@ -39,13 +30,11 @@ class AuthController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-        $accountStatus = UserAccountStatusEnum::ACTIVE;
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Hasher le mot de passe
             $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
-            $user->setAccountStatus($accountStatus);
 
             // Enregistrer l'utilisateur dans la base de données
             $entityManager->persist($user);
