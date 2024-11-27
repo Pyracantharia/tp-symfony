@@ -1,13 +1,27 @@
 # config/packages/security.yaml
 security:
+    # Gestion des algorithmes de hachage des mots de passe
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
+    # Définir les sources de récupération des utilisateurs
     providers:
-        in_memory: { memory: null }
+        # Exemple avec un provider en mémoire (peut être remplacé par un provider lié à une entité User)
+        in_memory: 
+            memory:
+                users:
+                    admin:
+                        password: '$2y$13$8RvDNOgV.aA9vFP5rZT9veGGAk5Ep4Y19oXH7kBr1zEfwFmMGuv52' # Mot de passe haché (par ex. "admin")
+                        roles: ['ROLE_ADMIN']
+        # Exemple d’un provider lié à une entité User
+        database_provider:
+            entity:
+                class: App\Entity\User
+                property: email  # ou username selon ton entité
 
+    # Configuration des firewalls
     firewalls:
-        # Désactiver la sécurité pour les routes de développement
+        # Désactiver la sécurité pour les routes spécifiques (profiler, assets, etc.)
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -15,10 +29,22 @@ security:
         # Firewall principal
         main:
             lazy: true
-            provider: in_memory
-            # Authentification via HTTP Basic
-            http_basic: ~  # Vous pouvez remplacer cela par json_login, form_login, etc., selon votre besoin
-            # Vous pouvez ajouter des options supplémentaires comme le remember_me, logout, etc.
+            provider: database_provider  # Utilise le provider basé sur l'entité User
+            form_login:
+                login_path: app_login       # Route pour afficher le formulaire de connexion
+                check_path: app_login       # Route pour valider la connexion
+                enable_csrf: true           # Protection CSRF pour le formulaire
+                default_target_path: /      # Redirection après connexion réussie
+            logout:
+                path: app_logout            # Route pour la déconnexion
+                target: /                   # Redirection après déconnexion
+            # Définir le point d'entrée par défaut
+            entry_point: form_login
 
+    # Contrôle des accès (ACL)
     access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        # Accès restreint à certaines routes en fonction des rôles
+        - { path: ^/admin, roles: ROLE_ADMIN }  # Ex : seulement accessible aux administrateurs
+        - { path: ^/profile, roles: ROLE_USER } # Ex : seulement accessible aux utilisateurs connectés
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
