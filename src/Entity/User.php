@@ -44,6 +44,9 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $city = null;
 
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -118,7 +121,18 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function getRoles(): array
     {
-        return ['ROLE_USER']; // Adjust as needed
+        // Garantir qu'un utilisateur a au moins le rôle ROLE_USER
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function getSalt(): ?string

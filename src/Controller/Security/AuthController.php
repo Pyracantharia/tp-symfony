@@ -15,13 +15,13 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AuthController extends AbstractController
 {
-    #[Route(path: '/login', name: 'login')]
+    #[Route(path: '/login2', name: 'login')]
     public function login(): Response
     {
         return $this->render('auth/login.html.twig');
     }
 
-    #[Route(path: '/register', name: 'register')]
+    #[Route(path: '/register2', name: 'register')]
     public function register(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -49,25 +49,25 @@ class AuthController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/forgot', name: 'forgot')]
+    #[Route(path: '/forgot2', name: 'forgot')]
     public function forgot(): Response
     {
         return $this->render('auth/forgot.html.twig');
     }
 
-    #[Route(path: '/confirm', name: 'confirm')]
+    #[Route(path: '/confirm2', name: 'confirm')]
     public function confirm(): Response
     {
         return $this->render('auth/confirm.html.twig');
     }
 
-    #[Route(path: '/reset', name: 'reset')]
+    #[Route(path: '/reset2', name: 'reset')]
     public function reset(): Response
     {
         return $this->render('auth/reset.html.twig');
     }
 
-    #[Route(path: '/logout', name: 'logout')]
+    #[Route(path: '/logout2', name: 'logout')]
     public function logout(): Response
     {
         $url = $this->generateUrl('homepage');
