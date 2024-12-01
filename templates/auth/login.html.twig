@@ -49,27 +49,31 @@
 									Ou connectez-vous avec vos identifiants
 								</p>
 
-								 <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+								<form method="post">
+									{% if error %}
+										<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+									{% endif %}
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
+									{% if app.user %}
+										<div class="mb-3">
+											You are logged in as
+											{{ app.user.userIdentifier }},
+											<a href="{{ path('app_logout') }}">Logout</a>
+										</div>
+									{% endif %}
 
-									<div class="relative" >
-									{# EMAIL  ##################################################"#}
+									<div
+										class="relative">
+										{# EMAIL  ##################################################"#}
 
-        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+										<input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
 
 
 									</div>
-									<div class="relative mt-3">
-									{# MOT DE PASSE  ##################################################"#}
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+									<div
+										class="relative mt-3">
+										{# MOT DE PASSE  ##################################################"#}
+										<input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
 
 										<button class="absolute right-2 inset-y-0 flex items-center px-2 opacity-50 hover:opacity-100 transition">
 											<svg class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
@@ -77,15 +81,13 @@
 										</button>
 									</div>
 									<div class="flex items-center justify-center mt-8">
-										
-										   <input type="hidden" name="_csrf_token"
-               value="{{ csrf_token('authenticate') }}"
-        >
-										
-										
-										  <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
+
+										<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+
+										<button class="btn btn-lg btn-primary" type="submit">
+											Sign in
+										</button>
 									</div>
 
 									<div class="flex items-center justify-center mt-16">
