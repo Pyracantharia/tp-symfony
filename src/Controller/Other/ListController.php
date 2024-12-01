@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Other;
 
+
 use App\Repository\PlaylistRepository;
+use App\Repository\User;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,17 +16,26 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ListController extends AbstractController
 {
+   
     #[Route(path: '/lists', name: 'my_lists')]
-    public function show(PlaylistRepository $playlistRepository): Response
+    public function show(): Response
     {
-        $playlists = $playlistRepository->findAll();
+        // Vérifiez si un utilisateur est connecté
+        $user = $this->getUser();
 
-        return $this->render(
-            'other/lists.html.twig',
-            [
-                'playlists' => $playlists,
-            ]
-        );
+        if (!$user) {
+            // Redirigez vers la page d'accueil si l'utilisateur n'est pas connecté
+            return $this->redirectToRoute('index');
+        }
+
+        // Récupérez les playlists via le champ `creator`
+        $playlists = $user->getPlaylists();
+
+        
+
+        return $this->render('other/lists.html.twig', [
+            'playlists' => $playlists,
+        ]);
     }
 
     #[Route('/playlist/{id}/media/render', name: 'playlist_media_render')]

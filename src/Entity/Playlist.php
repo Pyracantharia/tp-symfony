@@ -41,6 +41,9 @@ class Playlist
     #[ORM\OneToMany(targetEntity: PlaylistMedia::class, mappedBy: 'playlist')]
     private Collection $playlistMedia;
 
+    #[ORM\ManyToOne(inversedBy: 'playlists')]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->playlistSubscriptions = new ArrayCollection();
@@ -173,5 +176,17 @@ class Playlist
         return $this->playlistMedia->filter(function (PlaylistMedia $playlistMedia) {
             return $playlistMedia->getMedia() instanceof Serie;
         })->count();
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }
