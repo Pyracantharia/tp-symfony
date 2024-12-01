@@ -24,6 +24,9 @@ class Subscription
     #[ORM\Column]
     private ?int $duration = null;
 
+    #[ORM\Column(type: "text", nullable: true)]
+    private ?string $description = null;
+
     /**
      * @var Collection<int, User>
      */
@@ -79,6 +82,19 @@ class Subscription
     public function setDuration(int $duration): static
     {
         $this->duration = $duration;
+
+        return $this;
+    }
+
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }

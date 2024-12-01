@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
+
 use App\Entity\Subscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -40,4 +42,13 @@ class SubscriptionRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findByUser(User $user)
+    {
+        return $this->createQueryBuilder('s')
+            ->where(':user MEMBER OF s.users') // Supposons une relation ManyToMany entre User et Subscription
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
 }
