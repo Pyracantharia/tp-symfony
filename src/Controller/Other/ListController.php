@@ -18,6 +18,7 @@ class ListController extends AbstractController
 {
    
     #[Route(path: '/lists', name: 'my_lists')]
+   // #[IsGranted('ROLE_USER')] // Protection de la page pour les utilisateurs connectés
     public function show(): Response
     {
         // Vérifiez si un utilisateur est connecté
