@@ -49,11 +49,11 @@ class AuthController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/forgot2', name: 'forgot')]
-    public function forgot(): Response
-    {
-        return $this->render('auth/forgot.html.twig');
-    }
+    // #[Route(path: '/forgot2', name: 'forgot')]
+    // public function forgot(): Response
+    // {
+    //     return $this->render('auth/forgot.html.twig');
+    // }
 
     #[Route(path: '/confirm2', name: 'confirm')]
     public function confirm(): Response
@@ -61,17 +61,17 @@ class AuthController extends AbstractController
         return $this->render('auth/confirm.html.twig');
     }
 
-    #[Route(path: '/reset2', name: 'reset')]
-    public function reset(): Response
-    {
-        return $this->render('auth/reset.html.twig');
-    }
+    // #[Route(path: '/reset2', name: 'reset')]
+    // public function reset(): Response
+    // {
+    //     return $this->render('auth/reset.html.twig');
+    // }
 
-    #[Route(path: '/logout2', name: 'logout')]
-    public function logout(): Response
-    {
-        $url = $this->generateUrl('homepage');
+    // #[Route(path: '/logout2', name: 'logout')]
+    // public function logout(): Response
+    // {
+    //     $url = $this->generateUrl('homepage');
 
-        return new RedirectResponse($url);
-    }
+    //     return new RedirectResponse($url);
+    // }
 }
