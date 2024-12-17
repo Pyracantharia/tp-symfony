@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ language.name }}{% endblock %}
+       {% block contenu_page %}
+
+    <h1>{{ language.name }}</h1>
+    <p>Code: {{ language.code }}</p>
+    <a href="{{ path('app_language_index') }}">Retour à la liste</a>
+{% endblock %}

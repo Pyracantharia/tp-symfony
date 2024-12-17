@@ -38,6 +38,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             // Récupérer une souscription fictive créée dans SubscriptionFixtures
             $subscription = $this->getReference('subscription-' . ($i % 3));
             $user->setCurrentSubscription($subscription);
+
+            $role = $i % 2 === 0 ? ['USER'] : ['ADMIN'];
+            $user->setRoles($role);
         
             $manager->persist($user);
         

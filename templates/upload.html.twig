@@ -1,0 +1,50 @@
+
+{% extends 'base.html.twig' %}
+
+{% block contenu_page %}
+<h1>Upload d'images</h1>
+
+<form enctype="multipart/form-data">
+    <input type="file" multiple id="fileInput">
+    <button type="submit">Uploader</button>
+</form>
+
+<h2>Images uploadées :</h2>
+<ul>
+    {% for upload in uploads %}
+        <li>
+            <img src="{{ upload.url }}" alt="Uploaded Image" width="200">
+            <p>Par : {{ upload.uploadedBy.username }}</p>
+            <p>Date : {{ upload.uploadedAt|date('Y-m-d H:i') }}</p>
+        </li>
+    {% else %}
+        <p>Aucune image disponible.</p>
+    {% endfor %}
+</ul>
+
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    const files = document.querySelector('#fileInput').files;
+
+    Array.from(files).forEach(file => {
+        formData.append('files[]', file);
+    });
+
+    fetch('{{ path('api_upload') }}', {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            alert('Une erreur est survenue');
+        }
+    }).catch(error => {
+        console.error(error);
+        alert('Une erreur est survenue');
+    });
+});
+</script>
+{% endblock %}

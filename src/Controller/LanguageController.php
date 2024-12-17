@@ -17,6 +17,7 @@ final class LanguageController extends AbstractController
     #[Route(name: 'app_language_index', methods: ['GET'])]
     public function index(LanguageRepository $languageRepository): Response
     {
+      
         return $this->render('language/index.html.twig', [
             'languages' => $languageRepository->findAll(),
         ]);
